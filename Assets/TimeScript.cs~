@@ -145,7 +145,7 @@ public class TimeScript : MonoBehaviour {
             
             if (!noteindexaddedS) {
                 missed ++;
-                print("too late! total missed: " + missed);
+                print("Stoo late! total missed: " + missed);
 
                 noteindexS ++;
                 if (noteindexS != noteTicksS.Length) {
