@@ -17,13 +17,13 @@ public class TimeScript : MonoBehaviour {
 
     //float et;
 
-    long[] noteTicksS = new long[4];
+    long[] noteTicksS = new long[3];
     long targetS;
     int noteindexS;
     bool noteindexaddedS;
     bool completedS;
 
-    long[] noteTicksD = new long[4];
+    long[] noteTicksD = new long[2];
     long targetD;
     int noteindexD;
     bool noteindexaddedD;
@@ -199,15 +199,33 @@ public class TimeScript : MonoBehaviour {
     }
 
     void Populate() {
-        noteTicksS[0]  = 10000000;
-        noteTicksS[1]  = 20000000;
-        noteTicksS[2]  = 30000000;
-        noteTicksS[3]  = 40000000;
+        //                    8 beats per bar
+        //
+        //                   first bar is 16
+        //                   for a delay of
+        //                   one second
+        noteTicksS[0]  = ConvertLocToTick(16 + 1  - 1);
+        noteTicksS[1]  = ConvertLocToTick(16 + 9  - 1);
+        noteTicksS[2]  = ConvertLocToTick(16 + 11 - 1);
 
-        noteTicksD[0] = 15000000;
-        noteTicksD[1] = 25000000;
-        noteTicksD[2] = 35000000;
-        noteTicksD[3] = 45000000;
+        noteTicksD[0]  = ConvertLocToTick(16 + 5  - 1);
+        noteTicksD[1]  = ConvertLocToTick(16 + 13 - 1);
+        /*
+        noteTicksS[0]  = ConvertLocToTick(16 + 1 - 1);
+        noteTicksS[1]  = ConvertLocToTick(16 + 4 - 1);
+        noteTicksS[2]  = ConvertLocToTick(16 + 1 - 1);
+        noteTicksS[3]  = ConvertLocToTick(16 + 3 - 1);
+
+        noteTicksS[4]  = ConvertLocToTick(32 + 0 - 1);
+        noteTicksS[5]  = ConvertLocToTick(32 + 4 - 1);
+        noteTicksS[6]  = ConvertLocToTick(32 + 1 - 1);
+        noteTicksS[7]  = ConvertLocToTick(32 + 3 - 1);
+
+
+
+        noteTicksD[0]  = ConvertLocToTick(16 + 3 - 1);
+        noteTicksD[1]  = ConvertLocToTick(32 + 3 - 1);
+        */
 
 
         for (int i=0; i<noteTicksS.Length; i++) {
@@ -282,5 +300,9 @@ public class TimeScript : MonoBehaviour {
                 downTicksD = 0;
             }
         }
+    }
+
+    long ConvertLocToTick(int loc) {
+        return ((long)((float)loc*0.0625f*10000000));
     }
 }
