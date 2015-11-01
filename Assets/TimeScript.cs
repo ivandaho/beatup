@@ -14,6 +14,7 @@ public class TimeScript : MonoBehaviour {
 
     float org, dest;
     float spd;
+    float bpm = 60f;
 
     //float et;
 
@@ -303,6 +304,6 @@ public class TimeScript : MonoBehaviour {
     }
 
     long ConvertLocToTick(int loc) {
-        return ((long)((float)loc*0.0625f*10000000));
+        return ((long)((float)loc*0.0625f*10000000f*120f/bpm));
     }
 }
