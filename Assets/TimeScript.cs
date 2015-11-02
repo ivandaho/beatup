@@ -41,6 +41,7 @@ public class TimeScript : MonoBehaviour {
     long downTicksD;
 
     public GameObject marker;
+    public Transform sheet;
 	// Use this for initialization
 	void Start () {
         sw.Start();
@@ -230,17 +231,22 @@ public class TimeScript : MonoBehaviour {
 
 
         for (int i=0; i<noteTicksS.Length; i++) {
-            Instantiate(marker, new Vector3(transform.position.x, 
+            GameObject clone;
+            clone = Instantiate(marker, new Vector3(transform.position.x, 
                         noteTicksS[i]/10000000f * 5f,
                         transform.position.z), 
-                        Quaternion.identity); 
+                        Quaternion.identity) as GameObject;
+            clone.transform.SetParent(sheet);
+            
         }
 
         for (int i=0; i<noteTicksD.Length; i++) {
-            Instantiate(marker, new Vector3(transform.position.x+1f, 
+            GameObject clone;
+            clone = Instantiate(marker, new Vector3(transform.position.x+1f, 
                         noteTicksD[i]/10000000f * 5f,
                         transform.position.z), 
-                        Quaternion.identity); 
+                        Quaternion.identity) as GameObject;
+            clone.transform.SetParent(sheet);
         }
 
         
