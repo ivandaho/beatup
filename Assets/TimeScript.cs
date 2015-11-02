@@ -42,8 +42,21 @@ public class TimeScript : MonoBehaviour {
 
     public GameObject marker;
     public Transform sheet;
+
+
+    // audio stuff...
+
+    // need to streamline
+    AudioSource[] audioS = new AudioSource[3];
+    public AudioClip[] audioclipS = new AudioClip[3];
+    AudioSource[] audioD = new AudioSource[2];
+    public AudioClip[] audioclipD = new AudioClip[2];
+
+
+
 	// Use this for initialization
 	void Start () {
+
         sw.Start();
 
         org = 5f;
@@ -51,19 +64,33 @@ public class TimeScript : MonoBehaviour {
         spd = (dest-org) / 10000000;
         //transform.position = (new Vector3(0, 5,0));
 	
+        //audioSclips = new AudioClip[3];
+        //audioDclips = new AudioClip[2];
         Populate();
         targetS = noteTicksS[noteindexS];
         targetD = noteTicksD[noteindexD];
         tresh = 1000000;
 
         //Renderer rend = GetComponent<Renderer>();
-        
 
+        //audio stuff...
+
+        for (int i=0; i<audioS.Length; i++) {
+        audioS[i] = this.gameObject.AddComponent<AudioSource>();
+        audioS[i].clip = audioclipS[i];
+        }
+
+        for (int i=0; i<audioD.Length; i++) {
+        audioD[i] = this.gameObject.AddComponent<AudioSource>();
+        audioD[i].clip = audioclipD[i];
+        }
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        RespondToPressS();
+        RespondToPressD();
         ts = sw.Elapsed;
         Count();
         if (!completedS) {
@@ -73,25 +100,7 @@ public class TimeScript : MonoBehaviour {
             CheckD();
         }
 
-        RespondToPressS();
-        RespondToPressD();
         //Check();
-        //et = Convert.ToSingle(sw.ElapsedTicks);
-
-        // dont really need to position...
-        //transform.position = (new Vector3(0,
-        //            sw.ElapsedTicks/10000000f*-5f + 5f, 0));
-
-
-
-        //transform.position += (new Vector3(0, 
-                    //(dest-org)/60, 0));
-
-
-        //transform.position -= (new Vector3(0, 
-        // spd*et, 0));
-
-        // current =  (init + dest/spd)
 	
 	}
     
@@ -139,6 +148,7 @@ public class TimeScript : MonoBehaviour {
                 } else {
                     print("completedS");
                     completedS = true;
+                    noteindexS --;
                 }
             }
         } else {
@@ -155,6 +165,7 @@ public class TimeScript : MonoBehaviour {
                 } else {
                     print("completedS");
                     completedS = true;
+                    noteindexS --;
                 }
                 noteindexaddedS = true; // only adds one time!
             }
@@ -178,6 +189,7 @@ public class TimeScript : MonoBehaviour {
                 } else {
                     print("completedD");
                     completedD = true;
+                    noteindexD --;
                 }
             }
         } else {
@@ -194,6 +206,7 @@ public class TimeScript : MonoBehaviour {
                 } else {
                     print("completedD");
                     completedD = true;
+                    noteindexD --;
                 }
                 noteindexaddedD = true; // only adds one time!
             }
@@ -286,6 +299,7 @@ public class TimeScript : MonoBehaviour {
     void RespondToPressS() {
         downTicksS = sw.ElapsedTicks - pointS;
         if (Input.GetKeyDown(KeyCode.S)) {
+            audioS[noteindexS].Play();
             pointS = sw.ElapsedTicks;
             rendS.material.SetColor("_Color", Color.blue);
         } else {
@@ -299,6 +313,7 @@ public class TimeScript : MonoBehaviour {
     void RespondToPressD() {
         downTicksD = sw.ElapsedTicks - pointD;
         if (Input.GetKeyDown(KeyCode.D)) {
+            audioD[noteindexD].Play();
             pointD = sw.ElapsedTicks;
             rendD.material.SetColor("_Color", Color.blue);
         } else {
