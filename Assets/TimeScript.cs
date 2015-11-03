@@ -4,6 +4,8 @@ using System.Diagnostics; // req for stopwatch
 using System.Threading;
 using System;
 
+using UnityEngine.UI;
+
 public class TimeScript : MonoBehaviour {
     public Stopwatch sw = new Stopwatch();
     public TimeSpan ts;
@@ -30,7 +32,6 @@ public class TimeScript : MonoBehaviour {
     bool noteindexaddedD;
     bool completedD;
 
-    int hit = 0 , missed = 0;
     float tresh;
     public Renderer rendS;
     public Renderer rendD;
@@ -53,6 +54,11 @@ public class TimeScript : MonoBehaviour {
     public AudioClip[] audioclipD = new AudioClip[2];
 
 
+    // scoring stuff...
+    int hit = 0 , missed = 0;
+    public Text textHit;
+    public Text textMiss;
+    public Text textPercent;
 
 	// Use this for initialization
 	void Start () {
@@ -141,6 +147,8 @@ public class TimeScript : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.S)) {
                 hit ++;
                 print("NOICE! total hit: " + hit);
+                textHit.text = "HIT: " + hit.ToString();
+                textPercent.text = "ACCURACY: " + CalcPercent().ToString();
 
                 noteindexS ++;
                 if (noteindexS != noteTicksS.Length) {
@@ -158,6 +166,8 @@ public class TimeScript : MonoBehaviour {
             if (!noteindexaddedS) {
                 missed ++;
                 print("too late! total missed: " + missed);
+                textMiss.text = "MISS: " + missed.ToString();
+                textPercent.text = "ACCURACY: " + CalcPercent().ToString();
 
                 noteindexS ++;
                 if (noteindexS != noteTicksS.Length) {
@@ -182,6 +192,8 @@ public class TimeScript : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.D)) {
                 hit ++;
                 print("NOICE! total hit: " + hit);
+                textHit.text = "HIT: " + hit.ToString();
+                textPercent.text = "ACCURACY: " + CalcPercent().ToString();
 
                 noteindexD ++;
                 if (noteindexD != noteTicksD.Length) {
@@ -199,6 +211,8 @@ public class TimeScript : MonoBehaviour {
             if (!noteindexaddedD) {
                 missed ++;
                 print("too late! total missed: " + missed);
+                textMiss.text = "MISS: " + missed.ToString();
+                textPercent.text = "ACCURACY: " + CalcPercent().ToString();
 
                 noteindexD ++;
                 if (noteindexD != noteTicksD.Length) {
@@ -326,5 +340,9 @@ public class TimeScript : MonoBehaviour {
 
     long ConvertLocToTick(int loc) {
         return ((long)((float)loc*0.0625f*10000000f*120f/bpm));
+    }
+
+    float CalcPercent() {
+        return (float)hit/(float)(hit+missed)*100f;
     }
 }
