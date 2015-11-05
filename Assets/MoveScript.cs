@@ -17,7 +17,7 @@ public class MoveScript : MonoBehaviour {
 	void Update () {
         transform.position = (new Vector3(transform.position.x,
                     sw.ElapsedTicks/10000000f*-5f + initpos,
-                    transform.position.y));
+                    transform.position.z));
 	
 	}
 }

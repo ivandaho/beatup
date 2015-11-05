@@ -104,6 +104,7 @@ public class TimeScript : MonoBehaviour {
         }
         if (!completedD) {
             CheckD();
+            //Check(targetD, noteindexaddedD, KeyCode.D, noteindexD, noteTicksD, completedD);
         }
 
         //Check();
@@ -118,7 +119,7 @@ public class TimeScript : MonoBehaviour {
         }
     }
 
-    void Check() {
+    void CheckOld() {
         if (timeToNext < 500000) {
             if (Input.GetKeyDown(KeyCode.S)) {
                 transform.position = (new Vector3 (0, org, 0));
@@ -136,6 +137,52 @@ public class TimeScript : MonoBehaviour {
             }
         }
     }
+
+    void Check(long target, bool noteindexadded, KeyCode key, int noteindex, long[] noteTicks, bool completed) {
+        if (Timing(target) == 0) {
+            // if before treshold
+        } else if (Timing(target) == 1) {
+            // if within treshold
+            //rend.material.SetColor("_Color", Color.green);
+            noteindexadded = false;
+            if (Input.GetKeyDown(key)) {
+                hit ++;
+                print("NOICE! total hit: " + hit);
+                textHit.text = "HIT: " + hit.ToString();
+                textPercent.text = "ACCURACY: " + CalcPercent().ToString();
+
+                noteindex ++;
+                if (noteindex != noteTicks.Length) {
+                    target = noteTicks[noteindex];
+                } else {
+                    print("completed");
+                    completed = true;
+                    noteindex --;
+                }
+            }
+        } else {
+            // if passed treshold
+            //rend.material.DetColor("_Color", Color.red);
+            
+            if (!noteindexadded) {
+                missed ++;
+                print("too late! total missed: " + missed);
+                textMiss.text = "MISS: " + missed.ToString();
+                textPercent.text = "ACCURACY: " + CalcPercent().ToString();
+
+                noteindex ++;
+                if (noteindex != noteTicks.Length) {
+                    target = noteTicks[noteindex];
+                } else {
+                    print("completed");
+                    completed = true;
+                    noteindex --;
+                }
+                noteindexadded = true; // only adds one time!
+            }
+        }
+    }
+        
 
     void CheckS() {
         if (Timing(targetS) == 0) {
@@ -163,21 +210,21 @@ public class TimeScript : MonoBehaviour {
             // if passed treshold
             //rend.material.SetColor("_Color", Color.red);
             
-            if (!noteindexaddedS) {
+            if (!noteindexaddedD) {
                 missed ++;
                 print("too late! total missed: " + missed);
                 textMiss.text = "MISS: " + missed.ToString();
                 textPercent.text = "ACCURACY: " + CalcPercent().ToString();
 
-                noteindexS ++;
-                if (noteindexS != noteTicksS.Length) {
-                    targetS = noteTicksS[noteindexS];
+                noteindexD ++;
+                if (noteindexD != noteTicksD.Length) {
+                    targetD = noteTicksD[noteindexD];
                 } else {
-                    print("completedS");
-                    completedS = true;
-                    noteindexS --;
+                    print("completedD");
+                    completedD = true;
+                    noteindexD --;
                 }
-                noteindexaddedS = true; // only adds one time!
+                noteindexaddedD = true; // only adds one time!
             }
         }
     }
